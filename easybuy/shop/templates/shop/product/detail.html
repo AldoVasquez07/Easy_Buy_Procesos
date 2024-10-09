@@ -1,0 +1,66 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    <link href="{% static "css/detail.css" %}" rel="stylesheet">
+    <!-- Ruta de navegación para mejorar la experiencia de usuario -->
+    <div class="breadcrumb">
+        {{ product.category }} / {{ product.name }}
+    </div>
+    <!-- Contenedor del producto -->
+    <div class="product">
+        <!-- Sección de imágenes del producto -->
+        <div class="product-images">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" class="main-image" id="main-image">
+            <!-- Miniaturas de imágenes -->
+            <div class="thumbnails">
+                <!--<img src="{% static 'img/no_image.png' %}" alt="Thumbnail 1" class="thumbnail" onclick="changeMainImage(this.src)">
+                <img src="{% static 'img/no_image.png' %}" alt="Thumbnail 2" class="thumbnail" onclick="changeMainImage(this.src)">
+                <img src="{% static 'img/no_image.png' %}" alt="Thumbnail 3" class="thumbnail" onclick="changeMainImage(this.src)">-->
+            </div>
+        </div>
+
+        <!-- Información del producto -->
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <p class="category">
+                <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+            </p>
+            <p class="price">${{ product.price }}</p>
+
+            <!-- Descripción del producto -->
+            <div class="description">
+                <h3>Description</h3>
+                <p>{{ product.descripcion|linebreaks }}</p>
+            </div>
+            
+            <!-- Formulario para agregar al carrito -->
+            <form action="{% url "cart:cart_add" product.id %}" method="post" class="add-to-cart-form">
+                {{ cart_product_form }}
+                {% csrf_token %}
+                <!--<div class="quantity-control">
+                    <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="999">
+                    <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                </div>-->
+                <br>
+                <button type="submit" class="btn btn-primary btn-lg">Añadir al Carrito</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Script para cambiar la imagen principal -->
+<script>
+    function changeMainImage(src) {
+        document.getElementById('main-image').src = src;
+    }
+</script>
+
+{% endblock %}

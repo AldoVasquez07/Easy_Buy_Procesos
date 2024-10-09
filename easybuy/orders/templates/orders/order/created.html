@@ -1,0 +1,29 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Thank You for Your Order{% endblock %}
+
+{% block content %}
+<div class="thank-you-page">
+    <div class="thank-you-container">
+        <div class="thank-you-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <h1 class="thank-you-title">Thank You for Your Order!</h1>
+        <p class="thank-you-message">Your order has been successfully completed.</p>
+        <p class="order-number">Order Number: <strong>{{ order.id }}</strong></p>
+        <div class="next-steps">
+            <h2>What's Next?</h2>
+            <ul>
+                <li>You will receive an order confirmation email shortly.</li>
+                <li>We will process your order and ship it as soon as possible.</li>
+                <li>You can track your order status in your account.</li>
+            </ul>
+        </div>
+        <div class="action-buttons">
+            <a href="{% url 'shop:product_list' %}" class="btn btn-secondary">Continue Shopping</a>
+            <a href="#" class="btn btn-primary">View Order Details</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

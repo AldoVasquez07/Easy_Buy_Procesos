@@ -1,0 +1,47 @@
+# Python
+*.py[cod]
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+*.egg
+
+# Django
+*.log
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+*.pot
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+local_settings.py
+.secret
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración del sistema
+*.lock
+*.log
+
+# Entornos de desarrollo
+*.env
+*.env.local
+*.env.production
+*.env.development

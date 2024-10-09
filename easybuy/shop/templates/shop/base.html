@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My shop{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">EASY BUY</a>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'shop:product_list' %}">Productos</a></li>
+                    <li><a href="{% url 'cart:cart_detail' %}" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024. EASY BUY.</p>
+        </div>
+    </footer>
+</body>
+</html>

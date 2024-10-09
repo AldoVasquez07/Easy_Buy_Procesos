@@ -1,22 +1,22 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block title %}Tu Carrito de Compras{% endblock %}
+{% block title %}Your Shopping Cart{% endblock %}
 
 {% block content %}
 <div class="cart-page">
-    <h1 class="page-title">Tu Carrito de Compras</h1>
+    <h1 class="page-title">Your Shopping Cart</h1>
     
     {% if cart %}
         <div class="cart-table-container">
             <table class="cart-table">
                 <thead>
                     <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
                         <th>Total</th>
-                        <th>Acciones</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,7 @@
                                     <form action="{% url 'cart:cart_add' product.id %}" method="post" class="quantity-form">
                                         {{ item.update_quantity_form.quantity }}
                                         {{ item.update_quantity_form.override }}
-                                        <button type="submit" class="btn btn-update btn-lg">Actualizar</button>
+                                        <button type="submit" class="btn btn-update btn-lg">Update</button>
                                         {% csrf_token %}
                                     </form>
                                 </td>
@@ -41,7 +41,7 @@
                                 <td class="price">${{ item.total_price }}</td>
                                 <td>
                                     <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-                                        <button type="submit" class="btn btn-remove btn-lg">Eliminar</button>
+                                        <button type="submit" class="btn btn-remove btn-lg">Delete</button>
                                         {% csrf_token %}
                                     </form>
                                 </td>
@@ -60,11 +60,11 @@
         </div>
         
         <div class="cart-actions">
-            <a href="{% url 'shop:product_list' %}" class="btn btn-secondary btn-lg">Continuar Comprando</a>
-            <a href="{% url 'orders:order_create' %}" class="btn btn-primary btn-lg">Proceder al Pago</a>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-secondary btn-lg">Continue Shopping</a>
+            <a href="{% url 'orders:order_create' %}" class="btn btn-primary btn-lg">Proceed to Checkout</a>
         </div>
     {% else %}
-        <p class="empty-cart-message">Tu carrito de compras está vacío. <a href="{% url 'shop:product_list' %}">Empieza a comprar</a></p>
+        <p class="empty-cart-message">Your shopping cart is empty. <a href="{% url 'shop:product_list' %}">Start Shopping</a></p>
     {% endif %}
 </div>
 {% endblock %}

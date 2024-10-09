@@ -14,8 +14,10 @@ venv.bak/
 
 # Django
 *.log
-media/
 staticfiles/
+# Exclude the media directory but not its content (allow image uploads)
+!media/
+media/*.log
 *.pot
 *.pyc
 *.pyo

@@ -14,8 +14,6 @@ venv.bak/
 
 # Django
 *.log
-*.sqlite3
-db.sqlite3
 media/
 staticfiles/
 *.pot

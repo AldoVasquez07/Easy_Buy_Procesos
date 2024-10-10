@@ -29,6 +29,7 @@
                             <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ product.name }}">
                             <h3>{{ product.name }}</h3>
                             <p class="price">${{ product.price }}</p>
+                            <h3>{{ product.oferta }}</h3>
                         </a>
                     </div>
                 {% endfor %}

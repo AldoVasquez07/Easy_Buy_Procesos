@@ -21,8 +21,26 @@ class Category(models.Model):
         return reverse('shop:product_list_by_category', args=[self.slug])
 
 
+class Oferta(models.Model):
+    motivo = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200)
+    descripcion = models.TextField(blank=True)
+    descuento = models.DecimalField(max_digits=5, decimal_places=2)
+
+    class Meta:
+        ordering = ['motivo']
+        indexes = [
+            models.Index(fields=['id', 'slug']),
+            models.Index(fields=['motivo']),
+        ]
+    
+    def __str__(self):
+        return self.motivo
+
+
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    oferta = models.ForeignKey(Oferta, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)

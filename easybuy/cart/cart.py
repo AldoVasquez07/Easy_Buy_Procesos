@@ -5,9 +5,6 @@ from shop.models import Product
 
 class Cart:
     def __init__(self, request):
-        """
-        Initialize the cart.
-        """
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
@@ -53,5 +50,22 @@ class Cart:
         del self.session[settings.CART_SESSION_ID]
         self.save()
 
+
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        total = Decimal('0.00')
+        for item in self.cart.values():
+            price = Decimal(item['price'])
+            quantity = item['quantity']
+            
+            # Comprobar si el producto tiene una oferta asociada
+            if item.get('oferta'):  # Si la oferta está presente
+                oferta = item['oferta']
+                descuento = oferta.descuento  # El descuento es un valor porcentual
+                if descuento:
+                    # Aplicar el descuento: (precio * (1 - descuento / 100))
+                    price = price * (1 - Decimal(descuento) / 100)
+            
+            # Sumar al total el precio por la cantidad de productos
+            total += price * quantity
+        
+        return total

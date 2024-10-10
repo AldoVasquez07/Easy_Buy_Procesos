@@ -15,6 +15,7 @@
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>Unit Price</th>
+                        <th>Ofert</th>
                         <th>Total</th>
                         <th>Actions</th>
                     </tr>
@@ -38,6 +39,8 @@
                                     </form>
                                 </td>
                                 <td class="price">${{ item.price }}</td>
+                                <td class="price">{% if item.oferta %} ${{ item.oferta }}%{% else %}No offer{% endif %}
+                                </td>
                                 <td class="price">${{ item.total_price }}</td>
                                 <td>
                                     <form action="{% url 'cart:cart_remove' product.id %}" method="post">

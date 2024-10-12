@@ -8,8 +8,10 @@
 {% block content %}
     <div class="product-list-page">
         <link href="{% static "css/list.css" %}" rel="stylesheet">
+
+        <!-- Sidebar de categorías -->
         <aside class="sidebar">
-            <h3>Categories</h3>
+            <h3 class="sidebar-title">Categories</h3>
             
             <!-- Botón para mostrar/ocultar el menú desplegable de categorías -->
             <button class="dropdown-btn">Select Category ▼</button>
@@ -29,15 +31,18 @@
 
         <div class="product-list">
             <!-- Formulario de búsqueda -->
-            <form method="GET" action="{% url 'shop:product_list' %}">
-                <input type="text" name="q" placeholder="Search products" value="{{ request.GET.q }}">
-                <button type="submit">Search</button>
+            <form method="GET" action="{% url 'shop:product_list' %}" class="search-form">
+                <input type="text" name="q" class="search-input" placeholder="Search products" value="{{ request.GET.q }}">
+                <button type="submit" class="search-btn">Search</button>
             </form>
 
-            <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
-            <div class="products">
+            <!-- Título de productos -->
+            <h1 class="product-list-title">{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+
+            <!-- Contenedor de productos -->
+            <div class="products-grid">
                 {% for product in products %}
-                    <div class="product-item">
+                    <div class="product-card">
                         <a href="{{ product.get_absolute_url }}" class="product-link">
                             <div class="product-image-container">
                                 <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ product.name }}">
@@ -47,12 +52,12 @@
                                     <span class="offer-label">{{ product.offer.discount }}% OFF</span>
                                 {% endif %}
                             </div>
-                            <h3>{{ product.name }}</h3>
+                            <h3 class="product-name">{{ product.name }}</h3>
                             <p class="price">${{ product.price }}</p>
                         </a>
                     </div>
                 {% empty %}
-                    <p>No products found.</p>
+                    <p class="no-products-found">No products found.</p>
                 {% endfor %}
             </div>
 
@@ -60,17 +65,17 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if products.has_previous %}
-                        <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; first</a>
-                        <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+                        <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">&laquo; First</a>
+                        <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Previous</a>
                     {% endif %}
 
-                    <span class="current">
-                        Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                    <span class="current-page">
+                        Page {{ products.number }} of {{ products.paginator.num_pages }}
                     </span>
 
                     {% if products.has_next %}
-                        <a href="?page={{ products.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
-                        <a href="?page={{ products.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">last &raquo;</a>
+                        <a href="?page={{ products.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Next</a>
+                        <a href="?page={{ products.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Last &raquo;</a>
                     {% endif %}
                 </span>
             </div>

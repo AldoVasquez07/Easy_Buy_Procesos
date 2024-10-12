@@ -13,14 +13,21 @@
                 <li {% if not category %}class="selected"{% endif %}>
                     <a href="{% url "shop:product_list" %}">All</a>
                 </li>
-                {% for c in categories %}
-                    <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                {% for c in categories %} 
+                    <li {% if category and category.slug == c.slug %}class="selected"{% endif %}>
                         <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
                     </li>
                 {% endfor %}
             </ul>
         </aside>
+
         <div class="product-list">
+            <!-- Agregar formulario de búsqueda -->
+            <form method="GET" action="{% url 'shop:product_list' %}">
+                <input type="text" name="q" placeholder="Search products" value="{{ request.GET.q }}">
+                <button type="submit">Search</button>
+            </form>
+
             <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
             <div class="products">
                 {% for product in products %}
@@ -34,6 +41,8 @@
                             {% endif %}
                         </a>
                     </div>
+                {% empty %}
+                    <p>No products found.</p>
                 {% endfor %}
             </div>
         </div>

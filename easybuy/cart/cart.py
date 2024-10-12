@@ -8,7 +8,6 @@ class Cart:
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
-            # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
@@ -29,9 +28,7 @@ class Cart:
             else:
                 discount = Decimal('0.00')
             
-            print(f"Producto ID: {item['product'].id}, Precio: {item['price']}, Cantidad: {item['quantity']}, Descuento: {discount}")
             item['total_price'] = item['price'] * item['quantity'] * (1 - (discount / 100))
-            print(f"Total Price (con descuento): {item['total_price']}")
             yield item
 
     def __len__(self):
@@ -73,4 +70,3 @@ class Cart:
             total += price * quantity
         
         return total
-

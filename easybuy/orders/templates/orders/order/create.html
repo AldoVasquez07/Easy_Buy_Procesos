@@ -17,13 +17,13 @@
                             <span class="item-quantity">{{ item.quantity }}x</span>
                             <span class="item-name">{{ item.product.name }}</span>
                         </div>
-                        <span class="item-price">${{ item.total_price }}</span>
+                        <span class="item-price">${{ item.total_price|floatformat:2 }}</span>
                     </li>
                 {% endfor %}
             </ul>
             <div class="order-total">
                 <span>Total</span>
-                <span>${{ cart.get_total_price }}</span>
+                <span>${{ cart.get_total_price|floatformat:2 }}</span>
             </div>
         </div>
         

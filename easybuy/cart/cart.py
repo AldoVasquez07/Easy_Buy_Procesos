@@ -14,22 +14,27 @@ class Cart:
 
     def __iter__(self):
         product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids).prefetch_related('offer')  # Pre-cargar las ofertas para eficiencia
+        products = Product.objects.filter(id__in=product_ids)
         cart = self.cart.copy()
-        
+
         for product in products:
             cart[str(product.id)]['product'] = product
 
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-            item['quantity'] = int(item['quantity'])  # Asegurarte de que quantity sea un entero
-
-            # Obtener el descuento del producto si existe
-            discount = item['product'].offer.discount if item['product'].offer else 0
-            # Calcular el precio total considerando el descuento
-            item['total_price'] = item['price'] * item['quantity'] * (1 - (discount / 100))
             
+            if 'product' in item and item['product'].offer:
+                offer = item['product'].offer
+                discount = Decimal(offer.discount) if offer else Decimal('0.00')
+            else:
+                discount = Decimal('0.00')
+            
+            print(f"Producto ID: {item['product'].id}, Precio: {item['price']}, Cantidad: {item['quantity']}, Descuento: {discount}")
+            item['total_price'] = item['price'] * item['quantity'] * (1 - (discount / 100))
+            print(f"Total Price (con descuento): {item['total_price']}")
             yield item
+
+
 
 
     def __len__(self):

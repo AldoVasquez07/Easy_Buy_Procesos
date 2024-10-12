@@ -34,17 +34,13 @@ class Cart:
             print(f"Total Price (con descuento): {item['total_price']}")
             yield item
 
-
-
-
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
 
     def add(self, product, quantity=1, override_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0,
-                                     'price': str(product.price)}
+            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
         if override_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
@@ -64,23 +60,17 @@ class Cart:
         del self.session[settings.CART_SESSION_ID]
         self.save()
 
-
     def get_total_price(self):
         total = Decimal('0.00')
         for item in self.cart.values():
             price = Decimal(item['price'])
             quantity = item['quantity']
-
-            # Asegurarte de que el artículo tiene una oferta
-            if 'product' in item and item['product'].offer:  # Verifica si 'product' y 'offer' están presentes
-                offer = item['product'].offer  # Obtener la oferta del producto
-                discount = offer.discount if offer else 0  # Establecer el descuento a 0 si no hay oferta
-
-                # Aplicar el descuento si existe
+            if 'product' in item and item['product'].offer:
+                offer = item['product'].offer
+                discount = offer.discount if offer else 0
                 if discount:
-                    price *= (1 - (Decimal(discount) / 100))  # Aplica el descuento al precio
-
-            total += price * quantity  # Acumula el precio total multiplicado por la cantidad
+                    price *= (1 - (Decimal(discount) / 100))
+            total += price * quantity
         
         return total
 

@@ -7,6 +7,7 @@
 
 {% block content %}
     <div class="product-list-page">
+        <link href="{% static "css/list.css" %}" rel="stylesheet">
         <aside class="sidebar">
             <h3>Categories</h3>
             <ul>
@@ -22,7 +23,7 @@
         </aside>
 
         <div class="product-list">
-            <!-- Agregar formulario de búsqueda -->
+            <!-- Formulario de búsqueda -->
             <form method="GET" action="{% url 'shop:product_list' %}">
                 <input type="text" name="q" placeholder="Search products" value="{{ request.GET.q }}">
                 <button type="submit">Search</button>
@@ -33,12 +34,16 @@
                 {% for product in products %}
                     <div class="product-item">
                         <a href="{{ product.get_absolute_url }}" class="product-link">
-                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ product.name }}">
+                            <div class="product-image-container">
+                                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ product.name }}">
+                                
+                                <!-- Etiqueta de oferta -->
+                                {% if product.offer %}
+                                    <span class="offer-label">{{ product.offer.discount }}% OFF</span>
+                                {% endif %}
+                            </div>
                             <h3>{{ product.name }}</h3>
                             <p class="price">${{ product.price }}</p>
-                            {% if product.offer %}
-                                <h3>Offer: {{ product.offer.discount }}% !</h3>
-                            {% endif %}
                         </a>
                     </div>
                 {% empty %}
@@ -48,3 +53,4 @@
         </div>
     </div>
 {% endblock %}
+

@@ -30,3 +30,50 @@
     border-radius: 5px;
     z-index: 10;
 }
+
+/* Estilo para el botón del menú desplegable */
+.dropdown-btn {
+    background-color: #4CAF50; /* Color de fondo del botón */
+    color: white; /* Color de texto del botón */
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Abarca todo el ancho de la sidebar */
+    text-align: left; /* Alineación a la izquierda */
+}
+
+/* Contenedor oculto por defecto del contenido del menú desplegable */
+.dropdown-content {
+    display: none; /* Oculto por defecto */
+    background-color: #f9f9f9; /* Fondo del contenido */
+    list-style-type: none; /* Sin viñetas */
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd; /* Borde */
+}
+
+.dropdown-content li {
+    padding: 8px;
+    text-align: left;
+}
+
+.dropdown-content li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.dropdown-content li:hover {
+    background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+}
+
+.selected a {
+    font-weight: bold;
+    color: #4CAF50; /* Color diferente para la categoría seleccionada */
+}
+
+/* Mostrar el contenido cuando se hace clic */
+.show {
+    display: block;
+}

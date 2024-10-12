@@ -38,10 +38,10 @@
                                         {% csrf_token %}
                                     </form>
                                 </td>
-                                <td class="price">${{ item.price }}</td>
-                                <td class="price">{% if item.oferta %} ${{ item.oferta }}%{% else %}No offer{% endif %}
+                                <td class="price">${{ product.price|floatformat:2 }}</td>
+                                <td class="price">{% if product.offer.discount %} {{ product.offer.discount|floatformat:2 }}%{% else %}No offer{% endif %}
                                 </td>
-                                <td class="price">${{ item.total_price }}</td>
+                                <td class="price">${{ item.total_price|floatformat:2 }}</td>
                                 <td>
                                     <form action="{% url 'cart:cart_remove' product.id %}" method="post">
                                         <button type="submit" class="btn btn-remove btn-lg">Delete</button>
@@ -55,7 +55,7 @@
                 <tfoot>
                     <tr class="cart-total">
                         <td colspan="3">Total</td>
-                        <td class="price">${{ cart.get_total_price }}</td>
+                        <td class="price">${{ cart.get_total_price|floatformat:2 }}</td>
                         <td></td>
                     </tr>
                 </tfoot>

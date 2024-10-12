@@ -14,14 +14,23 @@ class Cart:
 
     def __iter__(self):
         product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
+        products = Product.objects.filter(id__in=product_ids).prefetch_related('offer')  # Pre-cargar las ofertas para eficiencia
         cart = self.cart.copy()
+        
         for product in products:
             cart[str(product.id)]['product'] = product
+
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+            item['quantity'] = int(item['quantity'])  # Asegurarte de que quantity sea un entero
+
+            # Obtener el descuento del producto si existe
+            discount = item['product'].offer.discount if item['product'].offer else 0
+            # Calcular el precio total considerando el descuento
+            item['total_price'] = item['price'] * item['quantity'] * (1 - (discount / 100))
+            
             yield item
+
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
@@ -56,16 +65,17 @@ class Cart:
         for item in self.cart.values():
             price = Decimal(item['price'])
             quantity = item['quantity']
-            
-            # Comprobar si el producto tiene una oferta asociada
-            if item.get('oferta'):  # Si la oferta está presente
-                oferta = item['oferta']
-                descuento = oferta.descuento  # El descuento es un valor porcentual
-                if descuento:
-                    # Aplicar el descuento: (precio * (1 - descuento / 100))
-                    price = price * (1 - Decimal(descuento) / 100)
-            
-            # Sumar al total el precio por la cantidad de productos
-            total += price * quantity
+
+            # Asegurarte de que el artículo tiene una oferta
+            if 'product' in item and item['product'].offer:  # Verifica si 'product' y 'offer' están presentes
+                offer = item['product'].offer  # Obtener la oferta del producto
+                discount = offer.discount if offer else 0  # Establecer el descuento a 0 si no hay oferta
+
+                # Aplicar el descuento si existe
+                if discount:
+                    price *= (1 - (Decimal(discount) / 100))  # Aplica el descuento al precio
+
+            total += price * quantity  # Acumula el precio total multiplicado por la cantidad
         
         return total
+

@@ -21,30 +21,30 @@ class Category(models.Model):
         return reverse('shop:product_list_by_category', args=[self.slug])
 
 
-class Oferta(models.Model):
-    motivo = models.CharField(max_length=200)
+class Offer(models.Model):
+    motive = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
-    descripcion = models.TextField(blank=True)
-    descuento = models.DecimalField(max_digits=5, decimal_places=2)
+    description = models.TextField(blank=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)
 
     class Meta:
-        ordering = ['motivo']
+        ordering = ['motive']
         indexes = [
             models.Index(fields=['id', 'slug']),
-            models.Index(fields=['motivo']),
+            models.Index(fields=['motive']),
         ]
     
     def __str__(self):
-        return self.motivo
+        return self.motive
 
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
-    oferta = models.ForeignKey(Oferta, on_delete=models.SET_NULL, null=True, blank=True)
+    offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
-    descripcion = models.TextField(blank=True)
+    description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)

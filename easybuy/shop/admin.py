@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Oferta
+from .models import Category, Product, Offer
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,11 +15,11 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-@admin.register(Oferta)
-class OfertaAdmin(admin.ModelAdmin):
-    list_display = ['motivo', 'slug', 'descripcion', 'descuento']
-    list_editable = ['descripcion', 'descuento']
-    prepopulated_fields = {'slug': ('motivo',)}
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ['motive', 'slug', 'discount']
+    list_editable = ['discount']
+    prepopulated_fields = {'slug': ('motive',)}
 
 
 

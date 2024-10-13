@@ -1,6 +1,10 @@
 :root {
     --primary-color: #000000;
+<<<<<<< Updated upstream
     --secondary-color: #000000;
+=======
+    --secondary-color: #2c3e50;
+>>>>>>> Stashed changes
     --background-color: #f0f2f5;
     --text-color: #333;
     --light-text-color: #666;

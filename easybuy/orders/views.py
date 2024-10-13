@@ -28,6 +28,3 @@ def order_create(request):
 def order_created(request):
     return render(request, 'orders/order/created.html')
 
-
-def order_created(request):
-    return render(request, 'orders/order/created.html')

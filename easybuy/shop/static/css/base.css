@@ -5,7 +5,7 @@
     --text-color: #333;
     --light-text-color: #666;
     --border-color: #ddd;
-    --success-color: #27ae60;
+    --success-color: #000000;
     --error-color: #e74c3c;
   }
   
@@ -228,7 +228,7 @@
   }
   
   .btn-secondary:hover {
-    background-color: #34495e;
+    background-color: #000000;
   }
   
   /* Cart page styles */

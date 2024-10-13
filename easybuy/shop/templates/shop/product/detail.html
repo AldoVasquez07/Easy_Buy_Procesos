@@ -17,12 +17,6 @@
         <!-- Sección de imágenes del producto -->
         <div class="product-images">
             <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" class="main-image" id="main-image">
-            <!-- Miniaturas de imágenes -->
-            <div class="thumbnails">
-                <!--<img src="{% static 'img/no_image.png' %}" alt="Thumbnail 1" class="thumbnail" onclick="changeMainImage(this.src)">
-                <img src="{% static 'img/no_image.png' %}" alt="Thumbnail 2" class="thumbnail" onclick="changeMainImage(this.src)">
-                <img src="{% static 'img/no_image.png' %}" alt="Thumbnail 3" class="thumbnail" onclick="changeMainImage(this.src)">-->
-            </div>
         </div>
 
         <!-- Información del producto -->

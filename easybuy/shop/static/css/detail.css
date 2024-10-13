@@ -25,15 +25,13 @@
 
     .product-images {
         flex: 1;
-        min-width: 200px;
-        min-height: 300px;
-        max-width: 300px;
-        max-height: 400px;
+        width: 300px;
+        height: 400px;
     }
 
     .main-image {
-        width: 100%;
-        height: auto;
+        width: auto;
+        height: 20%;
         margin-bottom: 15px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(233, 156, 46, 0.1);

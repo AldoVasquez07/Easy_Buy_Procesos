@@ -19,14 +19,24 @@ def product_list(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
-    
+
+    # Paginación
+    paginator = Paginator(products, 12)  # Muestra 12 productos por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la URL
+    try:
+        products = paginator.page(page_number)  # Obtiene la página solicitada
+    except PageNotAnInteger:
+        products = paginator.page(1)  # Si el número de página no es un entero, muestra la primera página
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)  # Si la página está fuera de rango, muestra la última página
+
     return render(request,
                   'shop/product/list.html',
                   {'category': category,
                    'categories': categories,
                    'products': products,
                    'query': query})  # Pasar el query al template
-    
+
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)

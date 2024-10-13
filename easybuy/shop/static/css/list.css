@@ -228,6 +228,10 @@
 .no-products-found {
     text-align: center;
     font-size: 18px;
-    color: #e74c3c;
+    color: white;
+    background-color: #2980b9;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
     margin-top: 50px;
+    border-radius: 5px;
 }

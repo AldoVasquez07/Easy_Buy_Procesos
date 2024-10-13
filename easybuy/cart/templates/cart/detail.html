@@ -44,7 +44,7 @@
                                 <td class="price">${{ item.total_price|floatformat:2 }}</td>
                                 <td>
                                     <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-                                        <button type="submit" class="btn btn-remove btn-lg">Delete</button>
+                                        <button type="submit" class="btn btn-delete btn-lg">Delete</button>
                                         {% csrf_token %}
                                     </form>
                                 </td>

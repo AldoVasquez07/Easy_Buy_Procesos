@@ -1,13 +1,9 @@
 :root {
     --primary-color: #000000;
-<<<<<<< Updated upstream
     --secondary-color: #000000;
-=======
-    --secondary-color: #2c3e50;
->>>>>>> Stashed changes
     --background-color: #f0f2f5;
     --text-color: #333;
-    --light-text-color: #666;
+    --light-text-color: #000000;
     --border-color: #ddd;
     --success-color: #000000;
     --error-color: #e74c3c;
@@ -88,6 +84,7 @@
   main {
     padding: 2rem 0;
   }
+  
   
   /* Product list styles */
   .product-list-page {
@@ -242,6 +239,22 @@
   .btn-secondary:hover {
     background-color: #000000;
   }
+
+  .btn-update, .btn-delete {
+    background-color: #000000; /* Negro */
+    color: #ffffff; /* Blanco para el texto */
+    border: none; /* Elimina el borde por defecto */
+  }
+  
+  .btn-update:hover, .btn-delete:hover {
+    background-color: #333333; /* Un tono más claro para el hover */
+  }
+  
+  .btn-lg {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
   
   /* Cart page styles */
   .cart-page {

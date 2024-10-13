@@ -9,12 +9,16 @@
     <div class="product-list-page">
         <link href="{% static "css/list.css" %}" rel="stylesheet">
 
-        <!-- Sidebar de categorías -->
-        <aside class="sidebar">
+        <!-- Sidebar de categorías -->     
+
+        <div class="product-list">
+            <!-- Formulario de búsqueda -->
+            <form method="GET" action="{% url 'shop:product_list' %}" class="search-form">
+                <input type="text" name="q" class="search-input" placeholder="Search products" value="{{ request.GET.q }}">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
             
-            <!-- Botón para mostrar/ocultar el menú desplegable de categorías -->
             <button class="dropdown-btn">Select Category ▼</button>
-            
             <!-- Menú desplegable que contiene las categorías -->
             <ul class="dropdown-content">
                 <li {% if not category %}class="selected"{% endif %}>
@@ -26,14 +30,6 @@
                     </li>
                 {% endfor %}
             </ul>
-        </aside>        
-
-        <div class="product-list">
-            <!-- Formulario de búsqueda -->
-            <form method="GET" action="{% url 'shop:product_list' %}" class="search-form">
-                <input type="text" name="q" class="search-input" placeholder="Search products" value="{{ request.GET.q }}">
-                <button type="submit" class="search-btn">Search</button>
-            </form>
 
             <!-- Título de productos -->
             <h1 class="product-list-title">{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>

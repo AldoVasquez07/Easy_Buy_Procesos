@@ -39,6 +39,10 @@
     border-radius: 5px;
 }
 
+.dropdown-btn:hover{
+    background-color: #007bff;
+}
+
 .offer-label {
     position: absolute;
     top: 10px;
@@ -157,7 +161,7 @@
 
 .search-btn {
     padding: 10px 20px;
-    background-color: #3498db;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
@@ -175,7 +179,7 @@
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
     color: #ffffff;
-    background-color: #1a5f7a;
+    background-color: rgb(29, 29, 29);
     border-radius: 5px;
     height: 50px;
     padding: 0 20px; /* Añade un poco de espacio a los lados */
@@ -185,10 +189,10 @@
 .pagination .step-links a {
     margin: 0 5px;
     padding: 10px;
-    background-color: #f1f1f1;
+    background-color: #605d64;
     border-radius: 5px;
     text-decoration: none;
-    color: #007bff;
+    color: white;
 }
 
 .pagination .step-links .current {

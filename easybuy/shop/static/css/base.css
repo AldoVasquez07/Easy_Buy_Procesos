@@ -22,6 +22,14 @@
     background-color: var(--background-color);
   }
   
+  .cart-icon:hover {
+    color: #00bfff; /* Celeste */
+  }
+
+  .product-icon:hover {
+    color: #00bfff; /* Celeste */
+  }
+
   .container {
     width: 90%;
     max-width: 1200px;

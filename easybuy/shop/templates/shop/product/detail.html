@@ -15,9 +15,20 @@
     <!-- Contenedor del producto -->
     <div class="product">
         <!-- Sección de imágenes del producto -->
+        <style>
+            .main-image {
+                width: 250px;          /* Ancho fijo */
+                height: 350px;        /* Alto fijo */
+                object-fit: cover;    /* Cubre todo el área de la imagen sin distorsión */
+                border-radius: 7px;
+            }
+        </style>
+        
         <div class="product-images">
-            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="{{ product.name }}" class="main-image" id="main-image">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" 
+                 alt="{{ product.name }}" class="main-image" id="main-image">
         </div>
+        
 
         <!-- Información del producto -->
         <div class="product-info">
@@ -26,11 +37,13 @@
                 <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
             </p>
             <p class="price">${{ product.price }}</p>
-
-            <div class="description">
-                <h3>Offert! 25% OFF</h3>
-            </div>
-
+            
+            {% if product.offer %}
+                <div class="description">
+                    <h3> Offert! {{product.offer.discount}}% OFF </h3>
+                </div>
+            {% endif %}
+            
             <!-- Descripción del producto -->
             <div class="description">
                 <h3>Description</h3>
@@ -41,11 +54,6 @@
             <form action="{% url "cart:cart_add" product.id %}" method="post" class="add-to-cart-form">
                 {{ cart_product_form }}
                 {% csrf_token %}
-                <!--<div class="quantity-control">
-                    <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="999">
-                    <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
-                </div>-->
                 <br>
                 <button type="submit" class="btn btn-primary btn-lg">Añadir al Carrito</button>
             </form>

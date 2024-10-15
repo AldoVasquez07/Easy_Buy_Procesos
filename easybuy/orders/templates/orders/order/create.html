@@ -76,9 +76,9 @@
                 </div>
                 <div>
                     <div class="form-group">
-                        <label for="expiry-date">Dia de Expiracion</label>
-                        <input type="date" placeholder=" " id="expiry-date" required>
-                    </div>
+                        <label for="expiry-date">Mes y Año de Expiración</label>
+                        <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" maxlength="5" required>
+                    </div>                    
                     <div class="form-group">
                         <label for="cvv">CVV</label>
                         <input type="text" id="cvv" name="cvv" pattern="\d{3}" placeholder="xxx" required>
@@ -105,4 +105,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('expiry-date').addEventListener('input', function (e) {
+        let input = e.target.value;
+
+        // Elimina cualquier carácter que no sea número
+        input = input.replace(/[^0-9]/g, '');
+
+        // Añade automáticamente "/" después de ingresar el mes (dos dígitos)
+        if (input.length >= 2) {
+            input = input.slice(0, 2) + '/' + input.slice(2, 4);
+        }
+
+        // Limita el campo a 5 caracteres (formato MM/YY)
+        if (input.length > 5) {
+            input = input.slice(0, 5);
+        }
+
+        // Actualiza el valor del campo manteniendo el "/"
+        e.target.value = input;
+    });
+</script>
 {% endblock %}

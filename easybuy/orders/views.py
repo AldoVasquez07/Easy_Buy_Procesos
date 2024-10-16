@@ -17,8 +17,15 @@ def order_create(request):
                     price=item['price'],
                     quantity=item['quantity']
                 )
-            cart.clear()
-            return redirect('orders:order_created')
+
+            payment_status = True #VALIDANDO PAGO
+
+            if payment_status:
+                cart.clear()
+                return redirect('orders:order_created')
+            else:
+                # Si el pago falla, muestra un mensaje de error
+                form.add_error(None, "There was a problem with the payment. Please try again.")
     else:
         form = OrderCreateForm()
     

@@ -7,7 +7,7 @@ class Order(models.Model):
     email = models.EmailField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    paid = models.BooleanField(default=False)
+    paid = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['-created']

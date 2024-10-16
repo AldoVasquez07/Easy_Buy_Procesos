@@ -11,7 +11,8 @@ env.bak/
 venv.bak/
 *.egg-info/
 *.egg
-
+# Si se va a subir datos quitar este aspecto:
+#*.sqlite3
 # Django
 *.log
 staticfiles/

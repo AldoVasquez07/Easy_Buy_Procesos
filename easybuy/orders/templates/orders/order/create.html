@@ -33,61 +33,70 @@
                 <h2>Payment Details</h2>
                 <div class="payment-method">
                     {% load static %}
-        
+
                     <input type="radio" name="payment-method" id="method-1" checked>
                     <label for="method-1" class="payment-method-item">
                         <img src="{% static 'images/visa.jpeg' %}" alt="Visa Payment">
                     </label>
-        
+
                     <input type="radio" name="payment-method" id="method-2">
                     <label for="method-2" class="payment-method-item">
                         <img src="{% static 'images/mastercard.jpeg' %}" alt="MasterCard Payment">
                     </label>
-        
+
                     <input type="radio" name="payment-method" id="method-3">
                     <label for="method-3" class="payment-method-item">
                         <img src="{% static 'images/paypal.jpeg' %}" alt="PayPal Payment">
                     </label>
-        
+
                     <input type="radio" name="payment-method" id="method-4">
                     <label for="method-4" class="payment-method-item">
                         <img src="{% static 'images/stripe.jpeg' %}" alt="Stripe Payment">
                     </label>
                 </div>
-                
+
                 <style>
                     .payment-method-item {
-                        display: inline-block; /* Alinea los elementos en línea */
-                        margin: 10px; /* Espacio entre cada opción */
-                        border: 2px solid transparent; /* Borde inicial transparente */
-                        border-radius: 5px; /* Bordes redondeados */
-                        transition: border-color 0.3s; /* Animación suave para el borde */
+                        display: inline-block;
+                        /* Alinea los elementos en línea */
+                        margin: 10px;
+                        /* Espacio entre cada opción */
+                        border: 2px solid transparent;
+                        /* Borde inicial transparente */
+                        border-radius: 5px;
+                        /* Bordes redondeados */
+                        transition: border-color 0.3s;
+                        /* Animación suave para el borde */
                     }
-        
+
                     /* Estilo cuando el radio está seleccionado */
-                    input[type="radio"]:checked + label {
-                        border-color: #00BFFF; /* Cambia el color del borde a celeste */
+                    input[type="radio"]:checked+label {
+                        border-color: #00BFFF;
+                        /* Cambia el color del borde a celeste */
                     }
                 </style>
+
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" name="card-number" pattern="\d{4} \d{4} \d{4} \d{4}"
+                        placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required>
+                    <span id="card-number-error" class="error-message"></span>
+                </div>
                 
                 <div class="form-group">
-                    <label for="card-number">Numero de Tarjeta</label>
-                    <input type="text" id="card-number" name="card-number" pattern="\d{4} \d{4} \d{4} \d{4}" placeholder="xxxx xxxx xxxx xxxx" required>
+                    <label for="expiry-date">Expiration Date (MM/YY)</label>
+                    <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" maxlength="5" required>
+                    <span id="expiry-date-error" class="error-message"></span>
                 </div>
-                <div>
-                    <div class="form-group">
-                        <label for="expiry-date">Mes y Año de Expiración</label>
-                        <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" maxlength="5" required>
-                    </div>                    
-                    <div class="form-group">
-                        <label for="cvv">CVV</label>
-                        <input type="text" id="cvv" name="cvv" pattern="\d{3}" placeholder="xxx" required>
-                    </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" pattern="\d{3}" placeholder="xxx" maxlength="3" required>
+                    <span id="cvv-error" class="error-message"></span>
                 </div>
-            </form>
-        </div>        
 
-        <div class="checkout-form">
+            </form>
+        </div>
+        <!--<div class="checkout-form">
             <h2>Billing Details</h2>
             <form method="post" class="order-form">
                 {% csrf_token %}
@@ -102,29 +111,124 @@
                 {% endfor %}
                 <button type="submit" class="btn btn-primary">Place Order</button>
             </form>
+        </div>-->
+
+        <div class="checkout-form">
+            <h2>Billing Details</h2>
+            <form method="post" class="order-form" id="order-form">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                    <span class="error-message" id="{{ field.id_for_label }}-error">{{ field.errors|striptags }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% if form.non_field_errors %}
+                <div class="error-message">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                <button type="button" class="btn btn-primary" id="place-order-btn">Place Order</button>
+                <span id="error-message" class="error-message" style="display:none; color: red;"></span>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById('expiry-date').addEventListener('input', function (e) {
-        let input = e.target.value;
+    document.addEventListener('DOMContentLoaded', function() {
+        // Establecer errores por defecto al cargar la página
+        const cardNumberError = document.getElementById('card-number-error');
+        const expiryDateError = document.getElementById('expiry-date-error');
+        const cvvError = document.getElementById('cvv-error');
 
-        // Elimina cualquier carácter que no sea número
-        input = input.replace(/[^0-9]/g, '');
+        // Mensajes de error por defecto
+        cardNumberError.textContent = 'Card number is required.';
+        expiryDateError.textContent = 'Expiry date is required.';
+        cvvError.textContent = 'CVV is required.';
 
-        // Añade automáticamente "/" después de ingresar el mes (dos dígitos)
-        if (input.length >= 2) {
-            input = input.slice(0, 2) + '/' + input.slice(2, 4);
-        }
+        // Suponiendo que tienes un contador de artículos en el carrito
+        let cartItemsCount = 0; // Cambia esto según la lógica de tu carrito
 
-        // Limita el campo a 5 caracteres (formato MM/YY)
-        if (input.length > 5) {
-            input = input.slice(0, 5);
-        }
+        // Función para formatear el número de la tarjeta
+        document.getElementById('card-number').addEventListener('input', function (e) {
+            let input = e.target.value;
 
-        // Actualiza el valor del campo manteniendo el "/"
-        e.target.value = input;
+            // Remover caracteres no numéricos
+            input = input.replace(/\D/g, '');
+
+            // Formatear como xxxx xxxx xxxx xxxx
+            input = input.replace(/(\d{4})(?=\d)/g, '$1 ');
+
+            // Actualizar el valor del campo
+            e.target.value = input;
+
+            // Validar longitud
+            if (input.length === 19) {
+                cardNumberError.textContent = ''; // Limpiar mensaje de error
+            } else {
+                cardNumberError.textContent = 'Card number must be in the format xxxx xxxx xxxx xxxx.';
+            }
+        });
+
+        // Función para formatear la fecha de expiración
+        document.getElementById('expiry-date').addEventListener('input', function (e) {
+            let input = e.target.value;
+            input = input.replace(/[^0-9]/g, '');
+
+            if (input.length >= 2) {
+                input = input.slice(0, 2) + '/' + input.slice(2, 4);
+            }
+
+            if (input.length > 5) {
+                input = input.slice(0, 5);
+            }
+
+            e.target.value = input;
+
+            const month = parseInt(input.slice(0, 2));
+            if (input.length === 5 && (month < 1 || month > 12)) {
+                expiryDateError.textContent = 'Invalid month. Use MM/YY format.';
+            } else {
+                expiryDateError.textContent = ''; // Limpiar mensaje de error si es válido
+            }
+        });
+
+        // Función para validar el campo CVV
+        document.getElementById('cvv').addEventListener('input', function (e) {
+            let input = e.target.value;
+            input = input.replace(/[^0-9]/g, '');
+            e.target.value = input;
+
+            if (input.length === 3) {
+                cvvError.textContent = ''; // Limpiar mensaje de error
+            } else {
+                cvvError.textContent = 'CVV must be exactly 3 digits.';
+            }
+        });
+
+        document.getElementById('place-order-btn').addEventListener('click', function() {
+            const cardNumberErrorMsg = cardNumberError.textContent.trim();
+            const expiryDateErrorMsg = expiryDateError.textContent.trim();
+            const cvvErrorMsg = cvvError.textContent.trim();
+            
+            // Verifica si hay errores
+            if (cardNumberErrorMsg || expiryDateErrorMsg || cvvErrorMsg) {
+                // Muestra el mensaje de error
+                document.getElementById('error-message').textContent = 'Please fill in all required fields correctly.';
+                document.getElementById('error-message').style.display = 'block';
+            } else {
+                // Si no hay errores, envía el formulario
+                document.getElementById('order-form').submit();
+            }
+        });
     });
 </script>
 {% endblock %}
+
+
+
+

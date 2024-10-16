@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import OrderItem
+from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
 
@@ -33,5 +33,5 @@ def order_create(request):
 
 
 def order_created(request):
-    return render(request, 'orders/order/created.html')
-
+    order = Order.objects.order_by('-id').first()
+    return render(request, 'orders/order/created.html', {'order': order})

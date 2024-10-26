@@ -1,5 +1,7 @@
 from django.db import models
 from shop.models import Product
+from django.urls import reverse
+
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
@@ -20,6 +22,9 @@ class Order(models.Model):
 
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
+
+    def get_absolute_url(self):
+        return reverse('orders:order_detail', args=[self.id])
 
 
 class OrderItem(models.Model):

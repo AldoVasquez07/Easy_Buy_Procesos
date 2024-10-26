@@ -7,6 +7,7 @@
     --border-color: #ddd;
     --success-color: #000000;
     --error-color: #e74c3c;
+    --action-color:#007bff;
   }
   
   * {
@@ -23,11 +24,11 @@
   }
   
   .cart-icon:hover {
-    color: #00bfff; /* Celeste */
+    color: var(--action-color);
   }
 
   .product-icon:hover {
-    color: #00bfff; /* Celeste */
+    color: var(--action-color);
   }
 
   .container {
@@ -229,7 +230,7 @@
   }
   
   .btn-primary:hover {
-    background-color: #00bfff;;
+    background-color: #00bfff;
   }
   
   .btn-secondary {
@@ -238,7 +239,7 @@
   }
   
   .btn-secondary:hover {
-    background-color: #00bfff;;
+    background-color: #00bfff;
   }
 
   .btn-update, .btn-delete {

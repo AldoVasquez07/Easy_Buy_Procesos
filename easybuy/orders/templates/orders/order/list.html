@@ -1,0 +1,58 @@
+{% extends "shop/base.html" %}
+{% block title %}
+    My Orders
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <div class="product-list-page">
+        <link href="{% static "css/list.css" %}" rel="stylesheet">
+
+        <!-- Sidebar de categorías -->     
+        <div class="product-list">
+            <!-- Formulario de búsqueda -->
+            <form method="GET" action="{% url 'orders:my_orders' %}" class="search-form">
+                <input type="text" name="q" class="search-input" placeholder="Search orders" value="{{ request.GET.q }}">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+
+            <!-- Contenedor de productos -->
+            <div class="products-grid">
+                {% for order in orders %}
+                    <div class="product-card">
+                        <a href="{{ order.get_absolute_url }}" class="product-link">
+                            <h3 class="product-name">Order: N° {{ order.id }}</h3>
+                            <p class="price">Owner: {{ order.first_name }} {{order.last_name}}</p>
+                            <p class="price">Email: {{ order.email }}</p>
+                            <p class="price">Date: {{ order.updated }}</p>
+                            <p class="price">Total: {{ order.get_total_cost }}</p>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p class="no-products-found">No Orders found.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Bloque de paginación -->
+            <div class="pagination">
+                <span class="step-links">
+                    {% if orders.has_previous %}
+                        <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">&laquo; First</a>
+                        <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Previous</a>
+                    {% endif %}
+
+                    <span class="current-page">
+                        Page {{ orders.number }} of {{ orders.paginator.num_pages }}
+                    </span>
+
+                    {% if orders.has_next %}
+                        <a href="?page={{ orders.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Next</a>
+                        <a href="?page={{ orders.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/list.js' %}"></script>
+{% endblock %}

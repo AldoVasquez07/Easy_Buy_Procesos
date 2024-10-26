@@ -9,8 +9,8 @@ My Order: {{ order.id }}
 <div class="product-detail-container">
     <link href="{% static " css/detail.css" %}" rel="stylesheet">
 
+    <h1>Order N° {{ order.id }}</h1>
     <div class="order-summary">
-        <h1>Order {{ order.id }}</h1>
         <h2>Order Summary</h2>
         <ul class="order-items">
             {% for item in order.items.all %}

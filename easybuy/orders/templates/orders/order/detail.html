@@ -2,45 +2,33 @@
 {% load static %}
 
 {% block title %}
-    My Order: {{ order.id }}
+My Order: {{ order.id }}
 {% endblock %}
 
 {% block content %}
 <div class="product-detail-container">
-    <link href="{% static "css/detail.css" %}" rel="stylesheet">
-    <!-- Ruta de navegación para mejorar la experiencia de usuario -->
+    <link href="{% static " css/detail.css" %}" rel="stylesheet">
 
-    <!-- Contenedor del producto -->
-    <div class="product">
-        <!-- Sección de imágenes del producto -->
-
-        <div class="order-summary">
-            <h1>Order {{ order.id }}</h1>
-            <h2>Order Summary</h2>
-            <ul class="order-items">
-                {% for item in order.items.all %}
-                <li class="order-item">
-                    <div class="item-info">
-                        <span class="item-quantity">{{ item.quantity }}x</span>
-                        <span class="item-name">{{ item.product.name }}</span>
-                    </div>
-                    <span class="item-price">${{ item.get_cost|floatformat:2 }}</span>
-                </li>
-                {% endfor %}
-            </ul>
-            <div class="order-total">
-                <span>Total</span>
-                <span>${{ order.get_total_cost|floatformat:2 }}</span>
-            </div>
-        </div>        
+    <div class="order-summary">
+        <h1>Order {{ order.id }}</h1>
+        <h2>Order Summary</h2>
+        <ul class="order-items">
+            {% for item in order.items.all %}
+            <li class="order-item">
+                <div class="item-info">
+                    <span class="item-quantity">{{ item.quantity }}x</span>
+                    <span class="item-name">{{ item.product.name }}</span>
+                </div>
+                <span class="item-price">${{ item.get_cost|floatformat:2 }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="order-total">
+            <span>Total</span>
+            <span>${{ order.get_total_cost|floatformat:2 }}</span>
+        </div>
     </div>
-</div>
 
-<!-- Script para cambiar la imagen principal -->
-<script>
-    function changeMainImage(src) {
-        document.getElementById('main-image').src = src;
-    }
-</script>
+</div>
 
 {% endblock %}

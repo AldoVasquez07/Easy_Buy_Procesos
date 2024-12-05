@@ -185,8 +185,8 @@
                 <div class="quantity-container">
                     <label for="quantity" class="quantity-label">Quantity:</label>
                     <button type="button" class="quantity-button" onclick="changeQuantity(-1)">-</button>
-                    <input type="text" name="quantity" id="quantity" class="quantity-input" value="1" 
-                           oninput="validateInput(this)" onblur="setDefaultValue(this)">
+                    <input type="text" name="quantity" id="quantity" class="quantity-input" value="1"
+                        oninput="validateInput(this)" onblur="setDefaultValue(this)">
                     <button type="button" class="quantity-button" onclick="changeQuantity(1)">+</button>
                 </div>
                 <button type="submit" class="btn btn-primary">Add to Cart</button>
@@ -196,25 +196,18 @@
 </div>
 
 <script>
-    function changeMainImage(src) {
-        document.getElementById('main-image').src = src;
-    }
-
-    function changeQuantity(amount) {
-        const quantityInput = document.getElementById('quantity');
-        let currentValue = parseInt(quantityInput.value) || 1; // Asegura que al menos sea 1
-        currentValue += amount;
-
-        if (currentValue < 1) {
-            currentValue = 1;
-        }
-
-        quantityInput.value = currentValue;
-    }
-
     function validateInput(input) {
-        // Permite solo números y elimina caracteres no deseados
+        const maxQuantity = 100; // Define el límite superior
+        const minQuantity = 1;   // Define el límite inferior
+
+        // Asegura que solo se permiten números
         input.value = input.value.replace(/[^0-9]/g, '');
+
+        if (parseInt(input.value) > maxQuantity) {
+            input.value = maxQuantity; // Ajusta al máximo si se excede
+        } else if (parseInt(input.value) < minQuantity && input.value !== '') {
+            input.value = minQuantity; // Ajusta al mínimo si es menor
+        }
     }
 
     function setDefaultValue(input) {
@@ -223,6 +216,20 @@
             input.value = '1';
         }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Selecciona todos los campos de cantidad en la tabla
+        const quantityInputs = document.querySelectorAll('.quantity-form input[type="number"]');
+
+        // Agrega eventos a cada campo
+        quantityInputs.forEach(input => {
+            // Cuando el usuario escribe, validamos la entrada
+            input.addEventListener('input', () => validateInput(input));
+
+            // Cuando el campo pierde el foco (blur), aseguramos que el valor sea el mínimo
+            input.addEventListener('blur', () => setDefaultValue(input));
+        });
+    });
 </script>
 
 {% endblock %}

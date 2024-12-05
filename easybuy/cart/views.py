@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from shop.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
+from django.contrib import messages
 
 
 @require_POST
@@ -12,10 +13,14 @@ def cart_add(request, product_id):
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(product=product,
-                 quantity=cd['quantity'],
-                 override_quantity=cd['override'])
+        initial_quantity = cart.cart.get(str(product_id), {}).get('quantity', 0)
+        cart.add(product=product, quantity=cd['quantity'], override_quantity=cd['override'])
+        final_quantity = cart.cart[str(product_id)]['quantity']
+
+        if final_quantity == 100 and (final_quantity > initial_quantity):
+            messages.warning(request, "Se alcanzó el límite máximo de 100 unidades para este producto.")
     return redirect('cart:cart_detail')
+
 
 
 @require_POST

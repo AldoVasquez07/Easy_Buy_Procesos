@@ -6,73 +6,75 @@
 {% block content %}
 <div class="cart-page">
     <h1 class="page-title">Your Shopping Cart</h1>
-    
-    {% if cart %}
-        <div class="cart-table-container">
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Offer</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart %}
-                        {% with product=item.product %}
-                            <tr>
-                                <td class="product-info">
-                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ product.name }}" class="product-thumbnail">
-                                    <div>
-                                        <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
-                                    </div>
-                                </td>
-                                <td>
-                                    <form action="{% url 'cart:cart_add' product.id %}" method="post" class="quantity-form">
-                                        {{ item.update_quantity_form.quantity }}
-                                        {{ item.update_quantity_form.override }}
-                                        <button type="submit" class="btn btn-update">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
-                                        {% csrf_token %}
-                                    </form>
-                                </td>
-                                <td class="price">${{ product.price|floatformat:2 }}</td>
-                                <td class="price">{% if product.offer.discount %} {{ product.offer.discount|floatformat:2 }}%{% else %} No offer {% endif %}</td>
-                                <td class="price">${{ item.total_price|floatformat:2 }}</td>
-                                <td class="actions">
-                                    <form action="{% url 'cart:cart_remove' product.id %}" method="post" class="delete-form">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </td>
 
-                                
-                            </tr>
-                        {% endwith %}
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr class="cart-total">
-                        <td colspan="4">Total</td>
-                        <td class="price">${{ cart.get_total_price|floatformat:2 }}</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        
-        <div class="cart-actions">
-            <a href="{% url 'shop:product_list' %}" class="btn btn-secondary">Continue Shopping</a>
-            <a href="{% url 'orders:order_create' %}" class="btn btn-primary">Proceed to Checkout</a>
-        </div>
+    {% if cart %}
+    <div class="cart-table-container">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Offer</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                {% with product=item.product %}
+                <tr>
+                    <td class="product-info">
+                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                            alt="{{ product.name }}" class="product-thumbnail">
+                        <div>
+                            <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+                        </div>
+                    </td>
+                    <td>
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="quantity-form">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.override }}
+                            <button type="submit" class="btn btn-update">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td class="price">${{ product.price|floatformat:2 }}</td>
+                    <td class="price">{% if product.offer.discount %} {{ product.offer.discount|floatformat:2 }}%{% else %} No offer {% endif %}</td>
+                    <td class="price">${{ item.total_price|floatformat:2 }}</td>
+                    <td class="actions">
+                        <form action="{% url 'cart:cart_remove' product.id %}" method="post" class="delete-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+
+
+                </tr>
+                {% endwith %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="cart-total">
+                    <td colspan="4">Total</td>
+                    <td class="price">${{ cart.get_total_price|floatformat:2 }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="cart-actions">
+        <a href="{% url 'shop:product_list' %}" class="btn btn-secondary">Continue Shopping</a>
+        <a href="{% url 'orders:order_create' %}" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
     {% else %}
-        <p class="empty-cart-message">Your shopping cart is empty. <a href="{% url 'shop:product_list' %}">Start Shopping</a></p>
+    <p class="empty-cart-message">Your shopping cart is empty. <a href="{% url 'shop:product_list' %}">Start
+            Shopping</a></p>
     {% endif %}
 </div>
 
@@ -102,7 +104,8 @@
         background-color: #f9f9f9;
     }
 
-    .cart-table th, .cart-table td {
+    .cart-table th,
+    .cart-table td {
         padding: 15px;
         text-align: left;
         border-bottom: 1px solid #ddd;
@@ -172,10 +175,16 @@
 
 <script>
     function validateInput(input) {
-        // Permite solo números y elimina caracteres no deseados
+        const maxQuantity = 100; // Define el límite superior
+        const minQuantity = 1;   // Define el límite inferior
+
+        // Asegura que solo se permiten números
         input.value = input.value.replace(/[^0-9]/g, '');
-        if (input.value === '') {
-            input.value = '1'; // Establece a 1 si está vacío
+
+        if (parseInt(input.value) > maxQuantity) {
+            input.value = maxQuantity; // Ajusta al máximo si se excede
+        } else if (parseInt(input.value) < minQuantity || input.value === '') {
+            input.value = minQuantity; // Ajusta al mínimo si es menor o está vacío
         }
     }
 
@@ -185,6 +194,18 @@
             input.value = '1';
         }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Selecciona todos los campos de cantidad en la tabla
+        const quantityInputs = document.querySelectorAll('.quantity-form input[type="number"]');
+
+        // Agrega eventos a cada campo
+        quantityInputs.forEach(input => {
+            input.addEventListener('input', () => validateInput(input));
+            input.addEventListener('blur', () => setDefaultValue(input));
+        });
+    });
 </script>
+
 
 {% endblock %}
